@@ -147,7 +147,7 @@ export default {
       pass1: '',
       pass2: '',
       role: '',
-      roles: ['admin', 'user', 'sensor', 'python'],
+      roles: ['admin', 'user', 'sensor', 'python', 'sensuser'],
       endDateObject: '',
       startDateObject: '',
       enabled: ''
