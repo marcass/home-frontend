@@ -44,8 +44,7 @@ export default {
               {text: 'StatusLog'},
               {text: 'SetupDoor'}
             ]
-          },
-          {text: 'Boiler'}
+          }
         ]
       }
     ]

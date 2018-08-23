@@ -39,5 +39,6 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App, AppNav }
-})
+  components: { App, AppNav },
+  render: h => h(App)
+}).$mount('#app')

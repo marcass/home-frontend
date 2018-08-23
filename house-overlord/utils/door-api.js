@@ -17,7 +17,7 @@ axios.defaults.headers.delete['Content-Type'] = 'application/json';
 //     console.log('RES', res);
 // });
 
-export {getBoilerState, getBoilerData, getBoilerValues, postCustomData, getADoorStatus, getUsers, getUser, getDoors, getDoorStatus, getAllowedUsers, postCreds, putUserData, putAllUserData, postUserData, postKeycode, deleteDoorUser, postAuth, getVerifyUser, getLog, postDoor, delDoor, userData};
+export { getADoorStatus, getUsers, getUser, getDoors, getDoorStatus, getAllowedUsers, putUserData, putAllUserData, postUserData, postKeycode, deleteDoorUser, getVerifyUser, getLog, postDoor, delDoor, userData};
 
 function simple_get(url) {
   return axios.get(url)
@@ -29,26 +29,6 @@ function simple_get(url) {
 function getUsers() {
   const url = BASE_URL+'/users'
   return simple_get(url)
-}
-
-function getBoilerData() {
-  const url = BASE_URL+'/boiler'
-  return simple_get(url)
-}
-
-function getBoilerState() {
-  const url = BASE_URL+'/boiler/state'
-  return simple_get(url)
-}
-
-function getBoilerValues() {
-  const url = BASE_URL+'/boiler/values'
-  return simple_get(url)
-}
-
-function postCustomData(payload) {
-  const url = BASE_URL+'/boiler'
-  return axios.post(url, payload);
 }
 
 function getUser(user) {
@@ -97,14 +77,6 @@ function getAllowedUsers() {
   return simple_get(url)
 }
 
-function login(payload) {
-  // console.log(payload)
-  const url = BASE_URL+'/auth'
-  return axios.post(url, payload)
-  // .then(res => {
-  //   console.log('RES', res)
-  // })
-}
 function putUserData(payload, route) {
   const url = BASE_URL+'/user/'
   return axios.put(url+route, payload);
@@ -149,14 +121,6 @@ function delDoor(door) {
   const url = BASE_URL+'/door/'
   // console.log(user)
   return axios.delete(url+door)
-  .then(function (response) {
-      return response.data
-  });
-}
-
-function postAuth(user, pass) {
-  const url = BASE_URL+'/auth'
-  return axios.post(user, pass)
   .then(function (response) {
       return response.data
   });

@@ -1,13 +1,17 @@
 <template>
-  <div class="users">
-    <app-nav></app-nav>
-     <h2>Currently Allowed Users</h2>
-     <div class="col-5" v-for="item in allowedusers" v-bind:key="item">
-       <li>{{ item.door }} has the following user(s) enabled:
-         <div v-for="x in item.users" v-bind:key="x">
-            {{ x }}
-         </div>
-       </li>
+  <div>
+    <div class="main-nav">
+      <app-nav></app-nav>
+    </div>
+    <div class="content">
+       <h2>Currently Allowed Users</h2>
+       <div v-for="item in allowedusers" v-bind:key="item">
+         <li>{{ item.door }} has the following user(s) enabled:
+           <div v-for="x in item.users" v-bind:key="x">
+              {{ x }}
+           </div>
+         </li>
+       </div>
      </div>
   </div>
 </template>
