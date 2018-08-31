@@ -1,125 +1,137 @@
 <template>
-  <div class="doors">
-    <app-nav></app-nav>
+  <div>
+    <div class="nav">
+      <app-nav></app-nav>
+    </div>
     <h2>Add a user</h2>
-    <table class="center">
-      <tr>
-        <th>
-          Existing users
-        </th>
-        <tr v-for="item in userlist" v-bind:key="item">
-          <td class="middle">
-            {{ item.username }}
-          </td>
-        </tr>
-      </table>
-      <br><br>
+    <div class="side">
       <table class="center">
         <tr>
-          <td class="tabLabel">
-            Username (if 'burner' it is onetime use)
-          </td>
-          <td>
-            <input v-model="username">
-          </td>
-        </tr>
-        <tr>
-          <td class="tabLabel">
-            Password
-          </td>
-          <td>
-            <input type="password" v-model="pass1">
-          </td>
-        </tr>
-        <tr>
-          <td class="tabLabel">
-            Confirm password
-          </td>
-          <td>
-            <input type="password" v-model="pass2">
-          </td>
-        </tr>
-        <tr>
-          <td class="tabLabel">
-            Keycode
-          </td>
-          <td>
-            <input v-model="keycode">
-          </td>
-        </tr>
-        <tr>
-          <td class="tabLabel">
-            Role
-          </td>
-          <td v-for="item in roles" v-bind:key="item">
-            <input type="radio" :id="item" :value="item" v-model="role">
-            <label for="item">{{ item }}</label>
-          </td>
-          <!-- <td>
-            <input type="radio" id="admin" value="admin" v-model="role">
-            <label for="admin">Admin</label>
-          </td>
-        </tr>
-        <tr>
-          <td>
-          </td>
-          <td>
-            <input type="radio" id="user" value="user" v-model="role">
-            <label for="user">User</label>
-          </td> -->
-        </tr>
-        <tr>
-          <td class="tabLabel">
-            Enabled
-          </td>
-          <td>
-            <input type="checkbox" id="checkbox" v-model="enabled">
-          </td>
-        </tr>
-        <tr>
-          <td class="tabLabel">
-            Valid from
-          </td>
-          <td>
-            <div style="position: relative">
-              <date-picker v-model="startDateObject" :config="config"></date-picker>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="tabLabel">
-            Valid until
-          </td>
-          <td>
-            <div style="position: relative">
-              <date-picker v-model="endDateObject" :config="config"></date-picker>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <th colspan="2"  class="middle">
-            <br>
-            Select doors that apply
+          <th>
+            Existing users
           </th>
-        </tr>
-        <tr v-for="item in doorlist" v-bind:key="item">
-          <td class="tabLabel">
-            <label >{{ item }}</label>
-          </td>
-          <td>
-            <input type="checkbox" :id="item" :value="item" v-model="enableddoorlist">
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2" class="middle">
-            <button v-on:click="verifyPass()">Submit</button>
-          </td>
-        </tr>
-      </table>
-      <div v-if="resp != ''">
-        <br><br>
-        User
-        {{ resp.data.Message }}
+          <tr v-for="item in userlist" v-bind:key="item">
+            <td class="middle">
+              {{ item.username }}
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="content">
+        <div v-if="buttons">
+          Please select the type of user you want to add
+          <button v-on:click="doorUser()">Door user</button>
+          <button v-on:click="sensorUser()">Sensor viewer</button>
+        </div>
+        <div v-if="dooruser">
+          <table class="center">
+            <tr>
+              <td class="tabLabel">
+                Username (if 'burner' it is onetime use)
+              </td>
+              <td>
+                <input v-model="username">
+              </td>
+            </tr>
+            <tr>
+              <td class="tabLabel">
+                Password
+              </td>
+              <td>
+                <input type="password" v-model="pass1">
+              </td>
+            </tr>
+            <tr>
+              <td class="tabLabel">
+                Confirm password
+              </td>
+              <td>
+                <input type="password" v-model="pass2">
+              </td>
+            </tr>
+            <tr>
+              <td class="tabLabel">
+                Keycode
+              </td>
+              <td>
+                <input v-model="keycode">
+              </td>
+            </tr>
+            <tr>
+              <td class="tabLabel">
+                Role
+              </td>
+              <td v-for="item in roles" v-bind:key="item">
+                <input type="radio" :id="item" :value="item" v-model="role">
+                <label for="item">{{ item }}</label>
+              </td>
+              <!-- <td>
+                <input type="radio" id="admin" value="admin" v-model="role">
+                <label for="admin">Admin</label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+              </td>
+              <td>
+                <input type="radio" id="user" value="user" v-model="role">
+                <label for="user">User</label>
+              </td> -->
+            </tr>
+            <tr>
+              <td class="tabLabel">
+                Enabled
+              </td>
+              <td>
+                <input type="checkbox" id="checkbox" v-model="enabled">
+              </td>
+            </tr>
+            <tr>
+              <td class="tabLabel">
+                Valid from
+              </td>
+              <td>
+                <div style="position: relative">
+                  <date-picker v-model="startDateObject" :config="config"></date-picker>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="tabLabel">
+                Valid until
+              </td>
+              <td>
+                <div style="position: relative">
+                  <date-picker v-model="endDateObject" :config="config"></date-picker>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"  class="middle">
+                <br>
+                Select doors that apply
+              </th>
+            </tr>
+            <tr v-for="item in doorlist" v-bind:key="item">
+              <td class="tabLabel">
+                <label >{{ item }}</label>
+              </td>
+              <td>
+                <input type="checkbox" :id="item" :value="item" v-model="enableddoorlist">
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" class="middle">
+                <button v-on:click="verifyPass()">Submit</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div v-if="resp != ''">
+          <br><br>
+          User
+          {{ resp.data.Message }}
+        </div>
       </div>
     </div>
 </template>
@@ -134,6 +146,9 @@ export default {
   name: 'updateuser',
   data () {
     return {
+      buttons: true,
+      dooruser: false,
+      sensoruser: false,
       doorlist: [],
       userlist: [],
       message: '',
@@ -158,6 +173,12 @@ export default {
     AppNav
   },
   methods: {
+    doorUser () {
+      this.dooruser = true
+    },
+    sensorUser () {
+      this.sensoruser = true
+    },
     postData (payload) {
       postUserData(payload).then((ret) => {
         this.resp = ret
