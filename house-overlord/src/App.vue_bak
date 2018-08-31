@@ -1,23 +1,17 @@
 <template>
   <div id="app">
-    <div v-if="$auth.ready()">
-      <router-view></router-view>
-    </div>
-    <div v-if="!$auth.ready()">
-        <div style="text-align:center; padding-top:50px;">
-            Loading site...
-        </div>
-    </div>
+    <img alt="Vue logo" src="./assets/logo.png">
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
 <script>
+import HelloWorld from './components/HelloWorld.vue'
+
 export default {
   name: 'app',
-  data () {
-    return {
-      context: 'app context'
-    }
+  components: {
+    HelloWorld
   }
 }
 </script>
@@ -31,5 +25,4 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-@import './assets/css/main.css'
 </style>

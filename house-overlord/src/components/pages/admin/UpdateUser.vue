@@ -1,6 +1,8 @@
 <template>
-  <div class="doors">
-    <app-nav></app-nav>
+  <div class="content">
+    <div class="main-nav">
+      <app-nav></app-nav>
+    </div>
     <h2>Select user to update/delete</h2>
     <select v-model="username">
       <option disabled value="">Select user</option>

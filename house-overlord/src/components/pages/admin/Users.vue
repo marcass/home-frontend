@@ -1,9 +1,10 @@
 <template>
-  <div class="users">
-    <app-nav></app-nav>
-    <h2>All users</h2>
-      <div v-for="item in userlist" v-bind:key="item">
-        <div class="col-5">
+  <div>
+    <div class="main-nav">
+      <app-nav></app-nav>
+    </div>
+      <div class="content" v-for="item in userlist" v-bind:key="item">
+        <div>
             <div  v-if="enabled(item.enabled)">
                 <h3>
                   {{ item.username }}  is ENABLED
@@ -26,23 +27,12 @@
             </div>
         </div>
       </div>
-   <!-- <div v-for="item in doorstatus">
-     <li>{{ item.door }} was {{ item.status }} at {{ item.time }}</li>
-
-  </div> -->
   </div>
 </template>
 
 <script>
 import { getUsers, getDoors, getDoorStatus, getAllowedUsers } from '../../../../utils/door-api'
-import 'bootstrap/dist/css/bootstrap.css'
-// Import this component
-import datePicker from 'vue-bootstrap-datetimepicker'
-// Import date picker css
-import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css'
 import AppNav from '../../AppNav'
-// import { isLoggedIn } from '../../../../utils/auth'
-
 export default {
   name: 'users',
   data () {
@@ -54,7 +44,6 @@ export default {
     }
   },
   components: {
-    datePicker,
     AppNav
   },
   methods: {

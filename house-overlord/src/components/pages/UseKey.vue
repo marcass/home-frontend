@@ -1,7 +1,9 @@
 <template>
-  <div class="keypad">
-    <app-nav></app-nav>
-    <div class="col-3">
+  <div>
+    <div class="main-nav">
+      <app-nav></app-nav>
+    </div>
+    <div class="main-footer">
       <h3>Door's status</h3>
       <ul v-for="item in doorsstatus" v-bind:key="item">
         <li>
@@ -23,15 +25,16 @@
         </li>
       </ul>
     </div>
-    <div class="col-2">
-      <h3>Choose your door</h3>
-      <div class="radio" id='doors' v-for="x in doorlist" v-bind:key="x">
-        <input type="radio" :id="x" :value="x" v-model="doorselected">
-        <label for="x">{{ x }}</label>
-      </div>
+    <div class="content">
+      <br>
+      <select v-model="doorselected">
+        <option disabled value="">Select a door to open</option>
+        <option v-for="item in doorlist" v-bind:key="item">{{ item }}</option>
+      </select>
     </div>
-    <div class="col-3">
-      <h3>Input your keycode, then press #</h3>
+    <div class="content">
+      <br>
+      <h3>Input your keycode,<br> then click #</h3>
       <keyboard layouts="123A|456B|789C|*0{#:enter}D" v-model="keycode" @enter="postkey"></keyboard>
       <!-- <p> Keycode = {{ keycode }}</p> -->
       <div v-if="keysent">
@@ -102,13 +105,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.radio {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: left;
-  padding-left:20px;
-  width: 8em;
-}
 div.statusgood {
     background-color: green;
     width: 50px;

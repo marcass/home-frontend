@@ -1,8 +1,10 @@
 <template>
   <div class="doors">
-    <app-nav></app-nav>
+    <div class="main-nav">
+      <app-nav></app-nav>
+    </div>
     <h1>Update keycode for {{ this.username }}</h1>
-    <div class="col-lg-7">
+    <div class="content">
       <ul>
         <li>
           Keycode: <input v-model="keycode" :placeholder="this.keycode">
