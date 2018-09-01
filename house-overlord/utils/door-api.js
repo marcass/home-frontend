@@ -17,13 +17,21 @@ axios.defaults.headers.delete['Content-Type'] = 'application/json';
 //     console.log('RES', res);
 // });
 
-export { getADoorStatus, getUsers, getUser, getDoors, getDoorStatus, getAllowedUsers, putUserData, putAllUserData, postUserData, postKeycode, deleteDoorUser, getVerifyUser, getLog, postDoor, delDoor, userData};
+export { getADoorStatus, getUsers, getUser, getDoors, getDoorStatus, getAllowedUsers,
+  putUserData, putAllUserData, postUserData, postKeycode, deleteDoorUser,
+  getVerifyUser, getLog, postDoor, delDoor, userData, getSites};
 
 function simple_get(url) {
   return axios.get(url)
   .then(function (response) {
       return response.data
   });
+}
+
+// get for sensor sites (kludgey)
+function getSites() {
+  const url = 'https://skibo.duckdns.org/api/data/values/sites'
+  return simple_get(url)
 }
 
 function getUsers() {
