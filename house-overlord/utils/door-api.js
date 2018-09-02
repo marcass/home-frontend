@@ -7,6 +7,7 @@ import Vue from 'vue'
 Vue.use(VueAxios, axios)
 
 const BASE_URL = 'https://skibo.duckdns.org/api/door';
+const AUTH_URL = 'https://skibo.duckdns.org/api/auth';
 Vue.axios.defaults.baseURL = BASE_URL;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.put['Content-Type'] = 'application/json';
@@ -96,7 +97,7 @@ function putAllUserData(payload) {
 }
 
 function postUserData(payload) {
-  const url = BASE_URL+'/user'
+  const url = AUTH_URL+'/user'
   return axios.post(url, payload);
 }
 
@@ -117,7 +118,7 @@ function postDoor(payload) {
 }
 
 function deleteDoorUser(user) {
-  const url = BASE_URL+'/user/'
+  const url = AUTH_URL+'/user/'
   // console.log(user)
   return axios.delete(url+user)
   .then(function (response) {

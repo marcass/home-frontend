@@ -37,7 +37,18 @@
       <br><br>
       <div v-if="edType == 'role'">
         Current role is: {{ userData.role }}
-        <table class="center">
+        <br>
+        Role:
+        <div v-for="item in roles" v-bind:key="item">
+          <input type="radio" :id="item" :value="item" v-model="role">
+          <label for="item">{{ item }}</label>
+        </div>
+        Allowed sites:
+        <select v-model="allowedsites" multiple>
+          <option disabled value="">Select allowed sites</option>
+          <option v-for="item in sites" v-bind:key="item" >{{ item }}</option>
+        </select>
+        <!-- <table class="center">
           <tr>
             <td class="tabLabel">
               <label for="admin">Admin</label>
@@ -55,7 +66,7 @@
             </td>
           </tr>
         </table>
-        <br>
+        <br> -->
         <button v-on:click="changeRole()">Change role</button>
       </div>
       <div v-if="edType == 'key'">
@@ -120,7 +131,7 @@
 </template>
 
 <script>
-import { getUsers, getDoors, putUserData, putAllUserData, deleteDoorUser, userData } from '../../../../utils/door-api'
+import { getUsers, getDoors, putUserData, putAllUserData, deleteDoorUser, userData, getSites } from '../../../../utils/door-api'
 import 'bootstrap/dist/css/bootstrap.css'
 import datePicker from 'vue-bootstrap-datetimepicker'
 import AppNav from '../../AppNav'
@@ -129,6 +140,9 @@ export default {
   name: 'updateuser',
   data () {
     return {
+      allowedsites: [],
+      sites: [],
+      roles: ['admin', 'user', 'sensuser'],
       doorlist: [],
       userlist: [],
       userData: '',
@@ -154,6 +168,12 @@ export default {
     AppNav
   },
   methods: {
+    sitesRoles() {
+      getSites().then((ret) => {
+        this.sites = ret
+        this.sites.push('doors')
+      })
+    },
     sendData (payload) {
       putAllUserData(payload).then((ret) => {
         this.response = ret
@@ -175,6 +195,7 @@ export default {
       this.edType = 'pass'
     },
     amendRole () {
+      this.sitesRoles()
       this.edType = 'role'
     },
     amendUser (username) {
@@ -206,7 +227,7 @@ export default {
       }
     },
     changeRole () {
-      this.changeattr(this.userData.username, 'role', this.role)
+      this.changeattr(this.userData.username, 'role', {'role': this.role, 'sites': this.allowedsites})
     },
     changeattr (userin, attr, val) {
       const payload = JSON.stringify({'username': userin, [attr]: val})

@@ -7,7 +7,7 @@
     <div class="side">
       <h3>Existing users</h3>
       <ul>
-        <li v-for="item, index in userlist" v-bind:key="index">
+        <li v-for="(item, index) in userlist" v-bind:key="index">
           {{ item.username }}
         </li>
       </ul>
@@ -112,16 +112,22 @@
         </table>
       </div>
       <div v-if="sensoruser">
+        Username:
+        <input v-model="username">
+        Password
+        <input type="password" v-model="pass1">
+        Confirm password
+        <input type="password" v-model="pass2">
         Role:
         <div v-for="item in sensorRoles" v-bind:key="item">
           <input type="radio" :id="item" :value="item" v-model="sensorrole">
           <label for="item">{{ item }}</label>
         </div>
         Allowed sites:
-        <div v-for="item in sites" v-bind:key="item">
-          <input type="radio" :id="item" :value="item" v-model="sensorsite">
-          <label for="item">{{ item }}</label>
-        </div>
+        <select v-model="sensorsite" multiple>
+          <option disabled value="">Select allowed sites</option>
+          <option v-for="item in sites" v-bind:key="item" >{{ item }}</option>
+        </select>
         <button v-on:click="addSensorUser()">Submit</button>
       </div>
       <div v-if="systemuser">
@@ -152,7 +158,7 @@ export default {
   data () {
     return {
       sensorrole: '',
-      sensorsite: '',
+      sensorsite: [],
       systemrole: '',
       buttons: true,
       dooruser: false,
@@ -228,7 +234,7 @@ export default {
     },
     addSensorUser () {
       if (this.pass1 === this.pass2) {
-        this.postData(JSON.stringify({'username': this.username, 'password': this.pass1, 'role': this.sensorrole, 'sites': this.sensorsite }))
+        this.postData(JSON.stringify({'username': this.username, 'password': this.pass1, 'role': { 'role': this.sensorrole, 'sites': this.sensorsite }}))
         this.getUsers()
       } else {
         this.resp = {'data': {'Status': 'Error', 'Message': 'Passwords do not match'}}
