@@ -106,7 +106,7 @@
           </tr>
           <tr>
             <td colspan="2" class="middle">
-              <button v-on:click="addDoorUser()">Submit</button>
+              <button v-on:click="addUser(JSON.stringify({'username': this.username, 'password': this.pass1, 'role': this.role, 'keycode': this.keycode, 'enabled': this.enabled, 'timeStart': this.startDateObject, 'timeEnd': this.endDateObject, 'doorlist': this.enableddoorlist}))">Submit</button>
             </td>
           </tr>
         </table>
@@ -128,7 +128,7 @@
           <option disabled value="">Select allowed sites</option>
           <option v-for="item in sites" v-bind:key="item" >{{ item }}</option>
         </select>
-        <button v-on:click="addSensorUser()">Submit</button>
+        <button v-on:click="addUser(JSON.stringify({'username': this.username, 'password': this.pass1, 'role': { 'role': this.sensorrole, 'sites': this.sensorsite }}))">Submit</button>
       </div>
       <div v-if="systemuser">
         Role:
@@ -136,7 +136,7 @@
           <input type="radio" :id="item" :value="item" v-model="sensorrole">
           <label for="item">{{ item }}</label>
         </div>
-        <button v-on:click="addSystemUser()">Submit</button>
+        <button v-on:click="addUser(JSON.stringify({'username': this.username, 'password': this.pass1, 'role': this.systemrole }))">Submit</button>
       </div>
       <div v-if="resp != ''">
         <br><br>
@@ -184,7 +184,8 @@ export default {
       roles: ['admin', 'user', 'sensor', 'python', 'sensuser'],
       endDateObject: '',
       startDateObject: '',
-      enabled: ''
+      enabled: '',
+      frontend: ''
     }
   },
   components: {
@@ -196,16 +197,19 @@ export default {
       this.dooruser = true
       this.systemuser = false
       this.sensoruser = false
+      this.frontend = 'doors'
     },
     systemUser () {
       this.systemuser = true
       this.dooruser = false
       this.sensoruser = false
+      this.frontend = null
     },
     sensorUser () {
       this.sensoruser = true
       this.dooruser = false
       this.systemuser = false
+      this.frontend = 'sensors'
       this.sitesRoles()
     },
     postData (payload) {
@@ -224,9 +228,9 @@ export default {
         this.userlist = ret
       })
     },
-    addDoorUser () {
+    addUser (data) {
       if (this.pass1 === this.pass2) {
-        this.postData(JSON.stringify({'username': this.username, 'password': this.pass1, 'role': this.role, 'keycode': this.keycode, 'enabled': this.enabled, 'timeStart': this.startDateObject, 'timeEnd': this.endDateObject, 'doorlist': this.enableddoorlist}))
+        this.postData(data)
         this.getUsers()
       } else {
         this.resp = {'data': {'Status': 'Error', 'Message': 'Passwords do not match'}}
