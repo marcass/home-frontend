@@ -106,7 +106,7 @@
           </tr>
           <tr>
             <td colspan="2" class="middle">
-              <button v-on:click="addUser(JSON.stringify({'username': this.username, 'password': this.pass1, 'role': this.role, 'keycode': this.keycode, 'enabled': this.enabled, 'timeStart': this.startDateObject, 'timeEnd': this.endDateObject, 'doorlist': this.enableddoorlist}))">Submit</button>
+              <button v-on:click="addUser(JSON.stringify({'username': username, 'password': pass1, 'role': role, 'keycode': keycode, 'enabled': enabled, 'timeStart': startDateObject, 'timeEnd': endDateObject, 'doorlist': enableddoorlist}))">Submit</button>
             </td>
           </tr>
         </table>
@@ -128,15 +128,21 @@
           <option disabled value="">Select allowed sites</option>
           <option v-for="item in sites" v-bind:key="item" >{{ item }}</option>
         </select>
-        <button v-on:click="addUser(JSON.stringify({'username': this.username, 'password': this.pass1, 'role': { 'role': this.sensorrole, 'sites': this.sensorsite }}))">Submit</button>
+        <button v-on:click="addSensorUser(JSON.stringify({'username': username, 'password':  pass1, 'role': { 'role':  sensorrole, 'sites':  sensorsite }}))">Submit</button>
       </div>
       <div v-if="systemuser">
+        Username:
+        <input v-model="username">
+        Password
+        <input type="password" v-model="pass1">
+        Confirm password
+        <input type="password" v-model="pass2">
         Role:
         <div v-for="item in systemRoles" v-bind:key="item">
           <input type="radio" :id="item" :value="item" v-model="sensorrole">
           <label for="item">{{ item }}</label>
         </div>
-        <button v-on:click="addUser(JSON.stringify({'username': this.username, 'password': this.pass1, 'role': this.systemrole }))">Submit</button>
+        <button v-on:click="addSystemUser(JSON.stringify({'username':  username, 'password':  pass1, 'role':  systemrole }))">Submit</button>
       </div>
       <div v-if="resp != ''">
         <br><br>
@@ -148,7 +154,7 @@
 </template>
 
 <script>
-import { getUsers, getDoors, postUserData, getSites } from '../../../../utils/door-api'
+import { getUsers, getDoors, postUserData, postUserDataDoor, getSites } from '../../../../utils/door-api'
 import 'bootstrap/dist/css/bootstrap.css'
 import datePicker from 'vue-bootstrap-datetimepicker'
 import AppNav from '../../AppNav'
@@ -228,7 +234,18 @@ export default {
         this.userlist = ret
       })
     },
-    addUser (data) {
+    addDoorUser (data) {
+      if (this.pass1 === this.pass2) {
+        this.postData(data)
+        postUserDataDoor(payload).then((ret) => {
+          this.resp = ret
+        })
+        this.getUsers()
+      } else {
+        this.resp = {'data': {'Status': 'Error', 'Message': 'Passwords do not match'}}
+      }
+    },
+    addSensorUser (data) {
       if (this.pass1 === this.pass2) {
         this.postData(data)
         this.getUsers()
@@ -236,17 +253,9 @@ export default {
         this.resp = {'data': {'Status': 'Error', 'Message': 'Passwords do not match'}}
       }
     },
-    addSensorUser () {
+    addSystemUser (data) {
       if (this.pass1 === this.pass2) {
-        this.postData(JSON.stringify({'username': this.username, 'password': this.pass1, 'role': { 'role': this.sensorrole, 'sites': this.sensorsite }}))
-        this.getUsers()
-      } else {
-        this.resp = {'data': {'Status': 'Error', 'Message': 'Passwords do not match'}}
-      }
-    },
-    addSystemUser () {
-      if (this.pass1 === this.pass2) {
-        this.postData(JSON.stringify({'username': this.username, 'password': this.pass1, 'role': this.systemrole }))
+        this.postData(data)
         this.getUsers()
       } else {
         this.resp = {'data': {'Status': 'Error', 'Message': 'Passwords do not match'}}

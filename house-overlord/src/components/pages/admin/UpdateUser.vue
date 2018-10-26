@@ -25,7 +25,6 @@
             <button v-on:click="amendEnabled()">Enable or disable</button>
             <button v-on:click="amendPass()">Change password</button>
             <button v-on:click="amendRole()">Change role</button>
-            <button v-on:click="amendEnabled()">Enable or disable</button>
           </td>
         </tr>
         <tr>
@@ -231,10 +230,11 @@ export default {
     },
     changeattr (userin, attr, val) {
       const payload = JSON.stringify({'username': userin, [attr]: val})
+      console.log(payload)
       putUserData(payload, attr).then((ret) => {
         this.response = ret
         this.disp = false
-        // console.log(this.response)
+        console.log(this.response)
       })
     },
     getDoors () {
